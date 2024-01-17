@@ -1,3 +1,4 @@
+// Package amiswagger
 package amiswagger
 
 import (
@@ -20,7 +21,7 @@ type Authorization struct {
 	Authorization string `header:"Authorization"`
 }
 
-type amiSwaggerHandler struct {
+type Handler struct {
 	api.Handler
 	Summary       string
 	Request       interface{}
@@ -28,8 +29,8 @@ type amiSwaggerHandler struct {
 	Authorization *string `json:"authorization"`
 }
 
-func NewOpenApiHandler(handler api.Handler, summary string, req interface{}, resp []OpenApiResponse) amiSwaggerHandler {
-	return amiSwaggerHandler{
+func NewOpenApiHandler(handler api.Handler, summary string, req interface{}, resp []OpenApiResponse) Handler {
+	return Handler{
 		Handler:  handler,
 		Summary:  summary,
 		Request:  req,
@@ -106,7 +107,7 @@ type GenerateParams struct {
 	Servers                      []openapi3.Server
 }
 
-func GenerateOpenApi(params GenerateParams, listHandler []amiSwaggerHandler) (err error) {
+func GenerateOpenApi(params GenerateParams, listHandler []Handler) (err error) {
 	reflector = openapi3.Reflector{}
 	reflector.Spec = &openapi3.Spec{Openapi: "3.0.3"}
 
