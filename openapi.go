@@ -20,7 +20,7 @@ type Authorization struct {
 	Authorization string `header:"Authorization"`
 }
 
-type Handler struct {
+type amiSwaggerHandler struct {
 	api.Handler
 	Summary       string
 	Request       interface{}
@@ -28,8 +28,8 @@ type Handler struct {
 	Authorization *string `json:"authorization"`
 }
 
-func NewOpenApiHandler(handler api.Handler, summary string, req interface{}, resp []OpenApiResponse) Handler {
-	return Handler{
+func NewOpenApiHandler(handler api.Handler, summary string, req interface{}, resp []OpenApiResponse) amiSwaggerHandler {
+	return amiSwaggerHandler{
 		Handler:  handler,
 		Summary:  summary,
 		Request:  req,
@@ -106,7 +106,7 @@ type GenerateParams struct {
 	Servers                      []openapi3.Server
 }
 
-func GenerateOpenApi(params GenerateParams, listHandler []Handler) (err error) {
+func GenerateOpenApi(params GenerateParams, listHandler []amiSwaggerHandler) (err error) {
 	reflector = openapi3.Reflector{}
 	reflector.Spec = &openapi3.Spec{Openapi: "3.0.3"}
 
