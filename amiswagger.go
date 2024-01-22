@@ -38,6 +38,22 @@ func NewOpenApiHandler(handler api.Handler, summary string, req interface{}, res
 	}
 }
 
+type Parameter struct {
+	Title       string
+	Description string
+	Filename    string
+	Servers     []openapi3.Server
+}
+
+func NewOpenApiParams(title string, description string, filename string, servers []openapi3.Server) Parameter {
+	return Parameter{
+		Title:       title,
+		Description: description,
+		Filename:    filename,
+		Servers:     servers,
+	}
+}
+
 type ErrorData struct {
 	Error   string `json:"error"`
 	Message string `json:"message,omitempty"`
@@ -102,12 +118,7 @@ func StructDetail(str interface{}) {
 	}
 }
 
-type GenerateParams struct {
-	Title, Description, Filename string
-	Servers                      []openapi3.Server
-}
-
-func GenerateOpenApi(params GenerateParams, listHandler []Handler) (err error) {
+func GenerateOpenApi(params Parameter, listHandler []Handler) (err error) {
 	reflector = openapi3.Reflector{}
 	reflector.Spec = &openapi3.Spec{Openapi: "3.0.3"}
 
